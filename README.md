@@ -22,7 +22,7 @@
 - Spring Boot
 - SerpAPI
 - Jackson (for JSON parsing)
-- RestTemplate / Apache HttpClient (for external requests)
+- Apache HttpClient (for external requests)
 - Swagger UI (for interactive API testing)
 
 ---
