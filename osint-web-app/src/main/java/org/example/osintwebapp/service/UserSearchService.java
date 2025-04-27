@@ -25,20 +25,29 @@ public class UserSearchService {
     public Map<String, String> searchUserAccounts(String username) {
         Map<String, String> result = new HashMap<>();
 
-        // Check GitHub
-        String githubUrl = GITHUB_URL + username;
+        result.put("github", checkAccount(GITHUB_URL + username, "https://github.com/" + username));
+        result.put("twitter", checkTwitterAccount(username));
+        result.put("reddit", checkAccount(REDDIT_URL + username + "/about.json", "https://www.reddit.com/user/" + username));
+        result.put("telegram", checkAccount(TELEGRAM_URL + username, "https://t.me/" + username));
+
+        return result;
+    }
+
+    private String checkAccount(String urlToCheck, String validUrlIfFound) {
         try {
-            HttpResponse response = sendHttpRequest(githubUrl);
-            if (response.getStatusLine().getStatusCode() == 200) {
-                result.put("github", "https://github.com/" + username);
+            HttpResponse response = sendHttpRequest(urlToCheck);
+            int statusCode = response.getStatusLine().getStatusCode();
+            if (statusCode == 200) {
+                return validUrlIfFound;
             } else {
-                result.put("github", "Не знайдено");
+                return "Не знайдено";
             }
         } catch (IOException e) {
-            result.put("github", "Помилка підключення");
+            return "Помилка підключення";
         }
+    }
 
-        // Check Twitter
+    private String checkTwitterAccount(String username) {
         String twitterApiUrl = TWITTER_URL + username;
         HttpGet twitterRequest = new HttpGet(twitterApiUrl);
         twitterRequest.setHeader("Authorization", bearerToken);
@@ -47,43 +56,15 @@ public class UserSearchService {
             HttpResponse response = httpClient.execute(twitterRequest);
             int statusCode = response.getStatusLine().getStatusCode();
             if (statusCode == 200) {
-                result.put("twitter", "https://twitter.com/" + username);
+                return "https://twitter.com/" + username;
             } else if (statusCode == 404) {
-                result.put("twitter", "Не знайдено");
+                return "Не знайдено";
             } else {
-                result.put("twitter", "Помилка: " + statusCode);
+                return "Помилка: " + statusCode;
             }
         } catch (IOException e) {
-            result.put("twitter", "Помилка підключення");
+            return "Помилка підключення";
         }
-
-        // Check Reddit
-        String redditUrl = REDDIT_URL + username + "/about.json";
-        try {
-            HttpResponse response = sendHttpRequest(redditUrl);
-            if (response.getStatusLine().getStatusCode() == 200) {
-                result.put("reddit", "https://www.reddit.com/user/" + username);
-            } else {
-                result.put("reddit", "Не знайдено");
-            }
-        } catch (IOException e) {
-            result.put("reddit", "Помилка підключення");
-        }
-
-        // Check Telegram
-        String telegramUrl = TELEGRAM_URL + username;
-        try {
-            HttpResponse response = sendHttpRequest(telegramUrl);
-            if (response.getStatusLine().getStatusCode() == 200) {
-                result.put("telegram", "https://t.me/" + username);
-            } else {
-                result.put("telegram", "Не знайдено");
-            }
-        } catch (IOException e) {
-            result.put("telegram", "Помилка підключення");
-        }
-
-        return result;
     }
 
     // Helper method to send HTTP requests and return the response
