@@ -1,7 +1,7 @@
 package org.example.osintwebapp.controller;
 
 import java.util.Map;
-import org.example.osintwebapp.dto.SearchRequest;
+import org.example.osintwebapp.model.SearchRequest;
 import org.example.osintwebapp.service.UserSearchService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.PostMapping;

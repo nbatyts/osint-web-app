@@ -1,8 +1,10 @@
 package org.example.osintwebapp.service;
+import static org.example.osintwebapp.config.ApiUrls.*;
 
 import java.io.IOException;
 import java.util.HashMap;
 import java.util.Map;
+import lombok.extern.log4j.Log4j2;
 import org.apache.http.HttpResponse;
 import org.apache.http.client.methods.HttpGet;
 import org.apache.http.impl.client.CloseableHttpClient;
@@ -10,12 +12,9 @@ import org.apache.http.impl.client.HttpClients;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 
+@Log4j2
 @Service
 public class UserSearchService {
-    private static final String GITHUB_URL = "https://api.github.com/users/";
-    private static final String TWITTER_URL = "https://api.twitter.com/2/users/by/username/";
-    private static final String REDDIT_URL = "https://www.reddit.com/user/";
-    private static final String TELEGRAM_URL = "https://t.me/";
 
     @Value("${twitter.bearer.token}")
     private String bearerToken;
@@ -43,7 +42,8 @@ public class UserSearchService {
                 return "Не знайдено";
             }
         } catch (IOException e) {
-            return "Помилка підключення";
+            log.error("Error while connecting to URL: " + urlToCheck, e);
+            return null;
         }
     }
 
@@ -63,7 +63,8 @@ public class UserSearchService {
                 return "Помилка: " + statusCode;
             }
         } catch (IOException e) {
-            return "Помилка підключення";
+            log.error("Error while connecting to Twitter API for user: " + username, e);
+            return null;
         }
     }
 
