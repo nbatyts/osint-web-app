@@ -50,7 +50,7 @@ public class UserSearchService {
     private String checkTwitterAccount(String username) {
         String twitterApiUrl = TWITTER_URL + username;
         HttpGet twitterRequest = new HttpGet(twitterApiUrl);
-        twitterRequest.setHeader("Authorization", "Bearer " + bearerToken);
+        twitterRequest.setHeader("Authorization", bearerToken);
 
         try {
             HttpResponse response = httpClient.execute(twitterRequest);
