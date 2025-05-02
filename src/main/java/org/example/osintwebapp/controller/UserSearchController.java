@@ -4,6 +4,8 @@ import java.util.Map;
 import org.example.osintwebapp.model.SearchRequest;
 import org.example.osintwebapp.service.UserSearchService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -21,7 +23,13 @@ public class UserSearchController {
     }
 
     @PostMapping("/search")
-    public Map<String, String> searchUserAccounts(@RequestBody SearchRequest request) {
-        return userSearchService.searchUserAccounts(request.getUsername());
+    public ResponseEntity<Map<String, String>> searchUserAccounts(@RequestBody SearchRequest request) {
+        Map<String, String> result = userSearchService.searchUserAccounts(request.getUsername());
+
+        if (result.containsValue(null)) {
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(result);
+        }
+
+        return ResponseEntity.ok(result);
     }
 }
