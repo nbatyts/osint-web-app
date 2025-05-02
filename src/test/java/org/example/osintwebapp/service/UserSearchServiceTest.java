@@ -15,6 +15,9 @@ public class UserSearchServiceTest {
 
     @Test
     public void testSearchUserAccounts() {
+        String token = System.getenv("BEARER_TOKEN");
+        assertNotNull(token, "Token must be set in the environment variable BEARER_TOKEN");
+
         Map<String, String> result = userSearchService.searchUserAccounts("kateryna");
 
         assertNotNull(result);
