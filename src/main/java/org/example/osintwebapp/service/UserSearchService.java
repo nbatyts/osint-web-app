@@ -16,7 +16,7 @@ import org.springframework.stereotype.Service;
 @Service
 public class UserSearchService {
 
-    @Value("#{systemEnvironment['BEARER_TOKEN']}")
+    @Value("${BEARER_TOKEN}")
     private String bearerToken;
 
     private final CloseableHttpClient httpClient = HttpClients.createDefault();
