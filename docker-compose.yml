@@ -4,9 +4,9 @@ services:
     build:
       context: /home/katerina/osint-web-app
       dockerfile: Dockerfile
+    environment:
+      - BEARER_TOKEN=${BEARER_TOKEN}
     ports:
       - "8080:8080"
     volumes:
       - ./target/osint-web-app-0.0.1-SNAPSHOT.jar:/app/app.jar
-    env_file:
-      - .env

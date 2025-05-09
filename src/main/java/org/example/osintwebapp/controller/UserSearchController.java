@@ -1,15 +1,13 @@
 package org.example.osintwebapp.controller;
 
+import java.util.Date;
 import java.util.Map;
 import org.example.osintwebapp.model.SearchRequest;
 import org.example.osintwebapp.service.UserSearchService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 @RestController
 @RequestMapping("/api/user")
@@ -31,5 +29,11 @@ public class UserSearchController {
         }
 
         return ResponseEntity.ok(result);
+    }
+
+    @GetMapping("/ping")
+    public ResponseEntity<?> ping() {
+
+        return ResponseEntity.ok(new Date());
     }
 }
