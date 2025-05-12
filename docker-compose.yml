@@ -2,11 +2,9 @@ version: '3'
 services:
   osint-web-app:
     build:
-      context: /home/katerina/osint-web-app
+      context: .
       dockerfile: Dockerfile
     ports:
       - "8080:8080"
-    volumes:
-      - ./target/osint-web-app-0.0.1-SNAPSHOT.jar:/app/app.jar
     env_file:
       - .env
