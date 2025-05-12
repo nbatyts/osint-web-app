@@ -1,6 +1,5 @@
 package org.example.osintwebapp.controller;
 
-import java.util.List;
 import lombok.RequiredArgsConstructor;
 import org.example.osintwebapp.model.EmailRequest;
 import org.example.osintwebapp.model.EmailVerificationResponse;
@@ -15,7 +14,6 @@ import org.springframework.web.bind.annotation.RestController;
 @RequiredArgsConstructor
 public class EmailBreachController {
     private final EmailBreachService emailBreachService;
-
 
     @PostMapping("/verify")
     public EmailVerificationResponse verifyEmail(@RequestBody EmailRequest request) {

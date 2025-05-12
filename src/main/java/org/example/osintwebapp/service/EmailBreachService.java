@@ -4,22 +4,29 @@ import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import java.io.IOException;
 import java.net.URI;
+import java.net.URLEncoder;
 import java.net.http.HttpClient;
 import java.net.http.HttpRequest;
 import java.net.http.HttpResponse;
+import java.nio.charset.StandardCharsets;
 import lombok.RequiredArgsConstructor;
 import org.example.osintwebapp.model.EmailVerificationResponse;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 
 @Service
 @RequiredArgsConstructor
 public class EmailBreachService {
-    private static final String HUNTER_API_KEY = "3bcc37b4520d497dbc0db86142835349307e79c9";
+
+    @Value("${hunter.api.key}")
+    private String hunterApiKey;
 
     public EmailVerificationResponse checkEmail(String email) {
+        String encodedEmail = URLEncoder.encode(email, StandardCharsets.UTF_8);
+
         try {
             String url = String.format("https://api.hunter.io/v2/email-verifier?email=%s&api_key=%s",
-                    email, HUNTER_API_KEY);
+                    encodedEmail, hunterApiKey);
 
             HttpClient client = HttpClient.newHttpClient();
             HttpRequest request = HttpRequest.newBuilder()
