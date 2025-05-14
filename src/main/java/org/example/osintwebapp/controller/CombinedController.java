@@ -23,7 +23,7 @@ public class CombinedController {
 
     @PostMapping("/verify-and-search")
     public ResponseEntity<Map<String, Object>> verifyEmailAndSearchUser(@RequestBody CombinedRequest request) {
-        EmailVerificationResponse emailResponse = emailBreachService.checkEmail(request.getUsername());
+        EmailVerificationResponse emailResponse = emailBreachService.checkEmail(request.getEmail());
 
         Map<String, String> searchResult = userSearchService.searchUserAccounts(request.getUsername());
 
